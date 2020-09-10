@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Added some automated unity build symlinking
+
 ## 1.0.3
 
 - Updated changelog
