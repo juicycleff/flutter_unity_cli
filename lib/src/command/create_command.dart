@@ -36,7 +36,7 @@ class CreateCommand extends CommandBase {
   FutureOr<void> run() async {
     var projectName = 'flutter_unity_widget';
     if(argResults.rest.isNotEmpty) {
-      projectName = argResults.rest.first;
+      // projectName = argResults.rest.first;
     }
 
     await create(
