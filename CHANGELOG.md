@@ -1,3 +1,7 @@
+## 1.0.5
+
+- Small fix
+
 ## 1.0.4
 
 - Added some automated unity build symlinking
