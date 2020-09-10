@@ -33,13 +33,13 @@ class PubSpec {
       output.title("If you haven't created your project yet create with:");
 
       print('');
-      print('fuw create myproject');
+      print('fuw create flutter_unity_widget');
       print('');
 
       output.title('Or enter your project folder with to use fuw: ');
 
       print('');
-      print('cd myproject && fuw start');
+      print('cd flutter_unity_widget && fuw start');
       print('');
 
       exit(1);

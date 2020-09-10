@@ -4,13 +4,12 @@ import 'dart:io';
 
 import 'package:flutter_unity_cli/flutter_unity_cli.dart';
 import 'package:flutter_unity_cli/src/constants.dart';
+import 'package:flutter_unity_cli/src/modules/start/patch_platforms.dart';
 import 'package:flutter_unity_cli/src/utils/output_utils.dart' as output;
 import 'package:pub_semver/pub_semver.dart';
 import 'package:flutter_unity_cli/src/utils/utils.dart';
 
 import 'delete_lib.dart';
-
-// part of './start.dart';
 
 Future<void> startUpdate({bool force = false}) async {
   // var workingDirectory = dir.path.replaceAll('lib', '');
@@ -36,7 +35,6 @@ Future<void> startUpdate({bool force = false}) async {
   }
 
   var dir = Directory('temp');
-  print(dir.parent.path);
 
   var tempPackage = await getNamePackage(dir);
   var tempVersion = await getVersionPackage(dir);
@@ -84,6 +82,9 @@ Future<void> startUpdate({bool force = false}) async {
     exit(1);
   }
 
+  var parent = Directory('.');
+  await patchIOSPlatform(parent, package);
+  // await patchAndroidPlatform(projName);
   await _getPackages(dir.parent.path);
 
   var tempDir = Directory('temp');

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_unity_cli/flutter_unity_cli.dart';
+import 'package:flutter_unity_cli/src/modules/start/patch_platforms.dart';
 import 'package:flutter_unity_cli/src/utils/output_utils.dart' as output;
-import 'package:flutter_unity_cli/src/utils/utils.dart';
 
 import 'delete_lib.dart';
 
@@ -18,6 +18,7 @@ Future<void> start({
 }) async {
   dir ??= Directory('lib');
   var workingDirectory = dir.path.replaceAll('lib', '');
+  var parentDir = Directory(workingDirectory);
 
   // first create project
   var folderArgs = [projName];
@@ -71,12 +72,6 @@ Future<void> start({
     }
   }
 
-  var package = await getNamePackage(dir.parent);
-  var version = await getVersionPackage(dir.parent);
-
-  print(package);
-  print(version);
-
   // first create project
   var unityFolderArgs = ['${projName}/unity'];
   final unityFolderProcess = await Process.start('mkdir', unityFolderArgs, runInShell: true);
@@ -88,6 +83,8 @@ Future<void> start({
     exit(1);
   }
 
+  await patchIOSPlatform(parentDir, projName);
+  // await patchAndroidPlatform(projName);
   await _getPackages(workingDirectory);
 
   printFlutterUnity();

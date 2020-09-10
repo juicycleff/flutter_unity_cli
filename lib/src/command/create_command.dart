@@ -34,16 +34,16 @@ class CreateCommand extends CommandBase {
 
   @override
   FutureOr<void> run() async {
-    if (argResults.rest.isEmpty) {
-      throw UsageException(
-          'project name not passed for a create command', usage);
-    } else {
-      await create(
-        projectName: argResults.rest.first,
-        withPlaceholder: argResults['placeholder'],
-        useEnvironment: argResults['use_enviroment'],
-      );
+    var projectName = 'flutter_unity_widget';
+    if(argResults.rest.isNotEmpty) {
+      projectName = argResults.rest.first;
     }
+
+    await create(
+      projectName: projectName,
+      withPlaceholder: argResults['placeholder'],
+      useEnvironment: argResults['use_enviroment'],
+    );
     super.run();
   }
 }
