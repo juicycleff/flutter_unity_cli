@@ -1,6 +1,6 @@
 name: flutter_unity_cli
 description: A command-line application for managing flutter unity at scale.
-version: 1.0.4
+version: 1.0.5
 homepage: https://www.xraph.com
 
 executables:
