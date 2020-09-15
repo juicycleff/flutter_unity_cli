@@ -3,22 +3,24 @@
 Use this for managing flutter unity project with large teams.
 
 
-To create a flutter unity plugin project use this command.
+To bootstrap flutter unity plugin project with setup to your flutter app, use this command.
+
+Your folder should be like this before running the command from root.
+Also make sure you are in the same folder level as your flutter application.
+
+```yaml
+    root:
+      - <flutter app project>
+```
 
 ```shell script
-$ fuw create flutter_unity_widget
+$ fuw create <flutter app project>
 ```
-or
-```shell script
-$ fuw create
-```
-
-Also make sure you are in the same folder level as your flutter application
 
 Your folder should be like this
 ```yaml
     root:
-      - <fluuter app project>
+      - <flutter app project>
       - flutter_unity_widget
 ```
 

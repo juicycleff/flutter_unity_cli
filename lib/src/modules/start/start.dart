@@ -13,16 +13,18 @@ Future<void> start({
   bool force = false,
   Directory dir,
   String projName,
+  String folderName,
   bool useEnvironment = true,
   Future<Process> Function() cloneProject,
 }) async {
   dir ??= Directory('lib');
-  var workingDirectory = dir.path.replaceAll('lib', '');
+  var workingDirectory = folderName;
   var parentDir = Directory(workingDirectory);
 
   // first create project
-  var folderArgs = [projName];
-  final rootProcess = await Process.start('mkdir', folderArgs, runInShell: true);
+  var folderArgs = [folderName];
+  final rootProcess =
+      await Process.start('mkdir', folderArgs, runInShell: true);
   await stdout.addStream(rootProcess.stdout);
   await stderr.addStream(rootProcess.stderr);
   final exitCode = await rootProcess.exitCode;
@@ -44,12 +46,12 @@ Future<void> start({
 
   // first create project
   var moveArgs = [
-    "${projName}/temp/android",
-    "${projName}/temp/ios",
-    "${projName}/temp/lib",
-    "${projName}/temp/pubspec.yaml",
-    "${projName}/temp/README.md",
-    "${projName}"
+    "${folderName}/temp/android",
+    "${folderName}/temp/ios",
+    "${folderName}/temp/lib",
+    "${folderName}/temp/pubspec.yaml",
+    "${folderName}/temp/README.md",
+    "${folderName}"
   ];
   final mvProcess = await Process.start('mv', moveArgs, runInShell: true);
   await stdout.addStream(mvProcess.stdout);
@@ -60,8 +62,7 @@ Future<void> start({
     exit(1);
   }
 
-
-  var tempDir = Directory('$projName/temp');
+  var tempDir = Directory('$folderName/temp');
   await deleteLib(tempDir, force);
 
   var dirTest = Directory(dir.parent.path + '/test');
@@ -73,8 +74,9 @@ Future<void> start({
   }
 
   // first create project
-  var unityFolderArgs = ['${projName}/unity'];
-  final unityFolderProcess = await Process.start('mkdir', unityFolderArgs, runInShell: true);
+  var unityFolderArgs = ['${folderName}/unity'];
+  final unityFolderProcess =
+      await Process.start('mkdir', unityFolderArgs, runInShell: true);
   await stdout.addStream(unityFolderProcess.stdout);
   await stderr.addStream(unityFolderProcess.stderr);
   final unityFolderCode = await unityFolderProcess.exitCode;
@@ -83,8 +85,9 @@ Future<void> start({
     exit(1);
   }
 
-  await patchIOSPlatform(parentDir, projName);
-  // await patchAndroidPlatform(projName);
+  await patchIOSPlatform(parentDir, folderName);
+  await patchAndroidPlatform(parentDir, projName);
+  // await patchFlutterPlatform(parentDir, projName);
   await _getPackages(workingDirectory);
 
   printFlutterUnity();
@@ -100,10 +103,10 @@ Future<void> _getPackages(String workingDirectory) async {
     workingDirectory: workingDirectory.isEmpty ? null : workingDirectory,
   );
   process.stdout.transform(utf8.decoder).listen(
-    print,
-    cancelOnError: true,
-    onDone: () => finished.complete(true),
-    onError: (e) => finished.complete(true),
-  );
+        print,
+        cancelOnError: true,
+        onDone: () => finished.complete(true),
+        onError: (e) => finished.complete(true),
+      );
   return finished.future;
 }

@@ -5,14 +5,15 @@ import 'package:flutter_unity_cli/src/utils/utils.dart' show mainDirectory;
 
 import '../constants.dart';
 
-
 Future<void> create({
   String projectName,
+  String folderName,
   bool withPlaceholder,
   bool useEnvironment,
 }) {
   return startFlutterCreate(
     projectName: projectName,
+    folderName: folderName,
     withPlaceholder: withPlaceholder,
     useEnvironment: useEnvironment,
   );
@@ -20,32 +21,36 @@ Future<void> create({
 
 Future<void> startFlutterCreate({
   String projectName,
+  String folderName,
   bool withPlaceholder,
   bool useEnvironment,
 }) {
-  mainDirectory = projectName + '/';
+  mainDirectory = folderName + '/';
 
   var gitArgs = createGitArgs(
-    projectName,
+    folderName,
     withPlaceholder,
   );
 
   return startPluginCreate(
     projectName,
+    folderName,
     useEnvironment,
-        () => Process.start('git', gitArgs, runInShell: true),
+    () => Process.start('git', gitArgs, runInShell: true),
   );
 }
 
 Future<void> startPluginCreate(
-    String projectName,
-    bool useEnvironment,
-    Future<Process> Function() cloneProject,
-    ) {
+  String projectName,
+  String folderName,
+  bool useEnvironment,
+  Future<Process> Function() cloneProject,
+) {
   return start(
     completeStart: true,
     force: true,
     projName: projectName,
+    folderName: folderName,
     dir: Directory('$projectName/lib'),
     useEnvironment: useEnvironment,
     cloneProject: cloneProject,
@@ -53,10 +58,9 @@ Future<void> startPluginCreate(
 }
 
 List<String> createGitArgs(
-    String projectName,
-    bool withPlaceholder,
-    ) {
-
+  String folderName,
+  bool withPlaceholder,
+) {
   var gitArgs = ['clone'];
   gitArgs.add('--filter=blob:limit=1m');
   gitArgs.add('--depth');
@@ -68,6 +72,6 @@ List<String> createGitArgs(
   }
   gitArgs.add(repo_url);
 
-  gitArgs.add("${projectName}/temp");
+  gitArgs.add("${folderName}/temp");
   return gitArgs;
 }

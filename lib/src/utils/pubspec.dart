@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path/path.dart';
-import 'package:pubspec_yaml/pubspec_yaml.dart';
 import 'package:flutter_unity_cli/src/utils/output_utils.dart' as output;
+import 'package:pubspec_yaml/pubspec_yaml.dart';
 import 'package:yaml/yaml.dart';
-
 
 class PubSpec {
   final String name;
@@ -47,7 +45,8 @@ class PubSpec {
     }
   }
 
-  PubSpec copy({Map devDependencies, Map dependencies, String name, String version}) {
+  PubSpec copy(
+      {Map devDependencies, Map dependencies, String name, String version}) {
     return PubSpec(
       devDependencies: devDependencies ?? this.devDependencies,
       dependencies: dependencies ?? this.dependencies,
@@ -58,7 +57,7 @@ class PubSpec {
 
   void replacePubSpecYaml(String path) {
     final pubSpecYaml =
-    File("${path}pubspec.yaml").readAsStringSync().toPubspecYaml();
+        File("${path}pubspec.yaml").readAsStringSync().toPubspecYaml();
 
     var buffer = StringBuffer();
     //Name
@@ -95,12 +94,12 @@ class PubSpec {
     //Dependencies
     buffer.write('dependencies:\n');
     pubSpecYaml.dependencies.toList().forEach(
-            (element) => buffer.write(_mapPubSpecDependencySpecToString(element)));
+        (element) => buffer.write(_mapPubSpecDependencySpecToString(element)));
     buffer.write('\n\n');
     //Dev dependencies
     buffer.write('dev_dependencies:\n');
     pubSpecYaml.devDependencies.toList().forEach(
-            (element) => buffer.write(_mapPubSpecDependencySpecToString(element)));
+        (element) => buffer.write(_mapPubSpecDependencySpecToString(element)));
     buffer.write('\n\n');
     buffer.write(''
         '# For information on the generic Dart part of this file, see the\n'
@@ -112,8 +111,8 @@ class PubSpec {
       buffer.write("$key:\n\n");
       buffer.write(
           '# The following line ensures that the Material Icons font is\n'
-              '# included with your application, so that you can use the icons in\n'
-              '# the material Icons class.\n');
+          '# included with your application, so that you can use the icons in\n'
+          '# the material Icons class.\n');
       Map<String, dynamic>.from(value).forEach((key, value) {
         buffer.write("  $key: $value\n");
       });
@@ -156,6 +155,25 @@ class PubSpec {
     buffer
         .write('  # For details regarding fonts from package dependencies,\n');
     buffer.write('  # see https://flutter.dev/custom-fonts/#from-packages\n');
+
+    File('${path}pubspec.yaml').writeAsStringSync(buffer.toString(),
+        mode: FileMode.write, encoding: utf8);
+  }
+
+  void addPluginPubSpecYaml(String path) {
+    final pubSpecYaml =
+        File("${path}pubspec.yaml").readAsStringSync().toPubspecYaml();
+
+    var buffer = StringBuffer();
+    //Dependencies
+
+    buffer.write('dependencies:\n');
+    buffer.write("  flutter_unity_widget:\n");
+    buffer.write("    ${"path: ../flutter_unity_widget"}\n");
+
+    pubSpecYaml.dependencies.toList().forEach(
+        (element) => buffer.write(_mapPubSpecDependencySpecToString(element)));
+    buffer.write('\n\n');
 
     File('${path}pubspec.yaml').writeAsStringSync(buffer.toString(),
         mode: FileMode.write, encoding: utf8);

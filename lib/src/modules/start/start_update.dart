@@ -2,16 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_unity_cli/flutter_unity_cli.dart';
 import 'package:flutter_unity_cli/src/constants.dart';
 import 'package:flutter_unity_cli/src/modules/start/patch_platforms.dart';
 import 'package:flutter_unity_cli/src/utils/output_utils.dart' as output;
-import 'package:pub_semver/pub_semver.dart';
 import 'package:flutter_unity_cli/src/utils/utils.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 import 'delete_lib.dart';
 
-Future<void> startUpdate({bool force = false}) async {
+Future<void> startUpdate({String projectName, bool force = false}) async {
   // var workingDirectory = dir.path.replaceAll('lib', '');
 
   // await deleteLib(dir, !dir.parent.existsSync());
@@ -45,7 +44,7 @@ Future<void> startUpdate({bool force = false}) async {
   var currentVersion = Version.parse(version);
   var latestVersion = Version.parse(tempVersion);
 
-  if(latestVersion <= currentVersion) {
+  if (latestVersion <= currentVersion) {
     var tempDir = Directory('temp');
     await deleteLib(tempDir, force);
     output.msg('\n\n You are using the latest version');
@@ -84,7 +83,7 @@ Future<void> startUpdate({bool force = false}) async {
 
   var parent = Directory('.');
   await patchIOSPlatform(parent, package);
-  // await patchAndroidPlatform(projName);
+  await patchAndroidPlatform(parent, projectName, update: true);
   await _getPackages(dir.parent.path);
 
   var tempDir = Directory('temp');
@@ -102,10 +101,10 @@ Future<void> _getPackages(String workingDirectory) async {
     workingDirectory: workingDirectory.isEmpty ? null : workingDirectory,
   );
   process.stdout.transform(utf8.decoder).listen(
-    print,
-    cancelOnError: true,
-    onDone: () => finished.complete(true),
-    onError: (e) => finished.complete(true),
-  );
+        print,
+        cancelOnError: true,
+        onDone: () => finished.complete(true),
+        onError: (e) => finished.complete(true),
+      );
   return finished.future;
 }
