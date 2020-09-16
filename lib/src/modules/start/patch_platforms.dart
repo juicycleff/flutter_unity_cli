@@ -38,6 +38,7 @@ void patchAndroidPlatform(Directory dir, String projectName,
     {bool update = false}) {
   var settingsGradlePatch = '''
 
+def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
 def plugins = new Properties()
 def pluginsFile = new File(flutterProjectRoot.toFile(), '.flutter-plugins')
 if (pluginsFile.exists()) {

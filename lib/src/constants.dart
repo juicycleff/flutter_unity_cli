@@ -1,1 +1,1 @@
-var repo_url = 'https://github.com/juicycleff/flutter-unity-view-widget.git';
+var repo_url = 'git@bitbucket.org:fictioneers/iwg_unity.git';
