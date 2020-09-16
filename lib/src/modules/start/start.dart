@@ -85,6 +85,18 @@ Future<void> start({
     exit(1);
   }
 
+  // first create project
+  var xcodeFolderArgs = ['${folderName}/ios_xcode'];
+  final xcodeFolderArgsFolderProcess =
+      await Process.start('mkdir', xcodeFolderArgs, runInShell: true);
+  await stdout.addStream(xcodeFolderArgsFolderProcess.stdout);
+  await stderr.addStream(xcodeFolderArgsFolderProcess.stderr);
+  final xcodeFolderCode = await xcodeFolderArgsFolderProcess.exitCode;
+  if (xcodeFolderCode != 0) {
+    output.error('Folder exist');
+    exit(1);
+  }
+
   await patchIOSPlatform(parentDir, folderName);
   await patchAndroidPlatform(parentDir, projName);
   // await patchFlutterPlatform(parentDir, projName);

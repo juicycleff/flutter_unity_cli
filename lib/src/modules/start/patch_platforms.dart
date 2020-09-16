@@ -79,18 +79,20 @@ include ":unityLibrary"
         settingsGradle += settingsPlugGradlePatch;
 
         File('flutter_unity_widget/android/settings.gradle').writeAsStringSync(
-            settingsGradle,
-            mode: FileMode.write,
-            encoding: utf8);
+          settingsGradle,
+          mode: FileMode.write,
+          encoding: utf8,
+        );
       }
 
       if (!settingsGradleText.contains('include ":unityLibrary"')) {
         settingsGradleText += settingsGradlePatch;
 
         File('${projectName}/android/settings.gradle').writeAsStringSync(
-            settingsGradleText,
-            mode: FileMode.write,
-            encoding: utf8);
+          settingsGradleText,
+          mode: FileMode.write,
+          encoding: utf8,
+        );
       }
     } else {
       var androidDir = Directory('../${projectName}/android');
