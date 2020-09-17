@@ -135,10 +135,7 @@ void patchFlutterPlatform(Directory dir, String projectName) {
     File file = File("${projectName}/pubspec.yaml");
     final yaml = loadYaml(file.readAsStringSync());
 
-    final modifiable = getModifiableNode(yaml);
-    modifiable['dependencies'] = {
-      'assets': ['img1.png', 'img2.png']
-    };
+    // final modifiable = getModifiableNode(yaml);
 
     var path = PathPackageDependencySpec(
         package: 'flutter_unity_widget', path: '../flutter_unity_widget');
