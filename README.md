@@ -3,6 +3,14 @@
 Use this for managing flutter unity project with large teams.
 
 
+#### Install.
+
+```shell script
+    pub global activate flutter_unity_cli
+```
+
+#### Usage.
+
 To bootstrap flutter unity plugin project with setup to your flutter app, use this command.
 
 Your folder should be like this before running the command from root.
