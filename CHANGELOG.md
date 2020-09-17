@@ -1,3 +1,7 @@
+## 1.0.6
+
+- Small fix
+
 ## 1.0.5
 
 - Small fix
